@@ -1,0 +1,18 @@
+cff-version: 1.2.0
+message: "Please cite the accompanying manuscript when using this numerical example."
+title: "Completed Price Tapes Reduce Decision Complexity in AMM Execution"
+type: software
+authors:
+  - family-names: Yang
+    given-names: Jinrui
+license: MIT
+abstract: >-
+  Deterministic calculation, analytical bounds and an offline demonstration
+  for the numerical information comparison in the accompanying manuscript.
+preferred-citation:
+  type: unpublished
+  title: "Completed Price Tapes Reduce Decision Complexity in AMM Execution"
+  authors:
+    - family-names: Yang
+      given-names: Jinrui
+  year: 2026

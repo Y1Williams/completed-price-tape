@@ -1,0 +1,60 @@
+# Readable scientific-figure baseline. Override for the verified journal,
+# deck, final placement, or explicit user requirement.
+
+# --- Fonts -------------------------------------------------------------------
+font.family        : Arial
+font.sans-serif    : Arial
+font.size          : 9.5
+axes.titlesize     : 12
+axes.labelsize     : 10
+xtick.labelsize    : 8.5
+ytick.labelsize    : 8.5
+legend.fontsize    : 9
+figure.titlesize   : 15
+mathtext.fontset   : custom
+mathtext.rm        : Arial
+mathtext.it        : Arial:italic
+mathtext.bf        : Arial:bold
+# Use mathtext only for semantic italic/subscript/superscript runs that Arial
+# cannot represent as plain Unicode. Keep ordinary phrases as plain live text.
+mathtext.default   : regular
+
+# --- Lines and markers -------------------------------------------------------
+axes.linewidth     : 0.85
+lines.linewidth    : 1.35
+lines.markersize   : 4.5
+patch.linewidth    : 0.7
+grid.linewidth     : 0.55
+
+# --- Ticks -------------------------------------------------------------------
+xtick.direction    : out
+ytick.direction    : out
+xtick.major.width  : 0.8
+ytick.major.width  : 0.8
+xtick.major.size   : 3.5
+ytick.major.size   : 3.5
+
+# --- Axes and legends --------------------------------------------------------
+axes.spines.top    : False
+axes.spines.right  : False
+axes.grid          : False
+axes.axisbelow     : True
+axes.titleweight   : bold
+axes.labelpad      : 4
+legend.frameon     : False
+legend.handlelength: 1.5
+legend.columnspacing: 1.25
+legend.labelspacing: 0.45
+
+# --- Figure and export -------------------------------------------------------
+figure.dpi         : 160
+savefig.dpi        : 600
+# Fixed canvas is intentional. Never change this to tight for independently
+# editable panels that will later share a manuscript or slide grid.
+savefig.bbox       : standard
+savefig.pad_inches : 0.08
+figure.facecolor   : white
+savefig.facecolor  : white
+svg.fonttype       : none
+pdf.fonttype       : 42
+ps.fonttype        : 42

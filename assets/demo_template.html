@@ -1,0 +1,124 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Completed Price Tapes | Numerical demonstration</title>
+<style>
+:root {color-scheme:light; --blue:#005a9c; --red:#b83c29; --ink:#161b22; --muted:#4b5563; --line:#d8dfe6;}
+* {box-sizing:border-box}
+body {margin:0;background:#fff;color:var(--ink);font-family:"Times New Roman",serif;font-size:18px;line-height:1.55}
+main {max-width:1160px;margin:0 auto;padding:28px 36px 44px}
+nav {display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--line);padding-bottom:13px;font-size:15px;gap:16px}
+h1 {font-size:34px;line-height:1.15;font-weight:normal;margin:25px 0 12px;max-width:940px}
+.lede {max-width:940px;margin:0 0 23px;font-size:20px}
+.grid {display:grid;grid-template-columns:1fr 1fr;gap:38px;align-items:start}
+h2 {font-size:23px;font-weight:normal;margin:0 0 10px}
+.chart {display:block;width:100%;height:auto}
+.caption {font-size:16px;margin:5px 0 0}
+.label {font-size:15px;margin:0 0 5px}
+.result {font-size:44px;line-height:1.1;color:var(--blue);margin:4px 0 8px;font-variant-numeric:tabular-nums}
+.source {font-size:15px;margin:0 0 16px}
+.slider {border-top:1px solid var(--line);border-bottom:1px solid var(--line);padding:15px 0;margin:20px 0}
+input[type=range] {width:100%;accent-color:var(--blue)}
+.scale {display:flex;justify-content:space-between;font-size:14px}
+.status {font-size:14px;color:var(--muted);margin:8px 0 0;min-height:3.1em}
+.bar-label {font-size:16px;margin:12px 0 4px}
+.track {width:100%;height:29px;background:#f3f5f7;border-left:1px solid #333;position:relative}
+.bar {height:100%;min-width:1px;display:block}
+.cost {background:var(--red)} .tape {background:var(--blue)}
+.value {font-variant-numeric:tabular-nums;font-weight:bold;margin-left:6px;color:black}
+.small {font-size:15px}.notes {margin-top:28px;border-top:1px solid var(--line);padding-top:18px}
+.notes p {margin:8px 0}.steps {display:grid;grid-template-columns:1fr 1fr 1fr;gap:24px;margin:18px 0}
+code {font:14px/1.5 Consolas,monospace;background:#f3f5f7;padding:3px 5px;overflow-wrap:anywhere}
+details {margin-top:18px;font-size:16px} summary {cursor:pointer}
+footer {font-size:14px;margin-top:24px;border-top:1px solid var(--line);padding-top:12px}
+@media(max-width:780px) {main{padding:18px}h1{font-size:29px}.grid,.steps{grid-template-columns:1fr}.grid{gap:26px}.chart{max-width:500px;margin:auto}.lede{font-size:18px}}
+@media print {input{display:none}main{padding:0}.grid{gap:25px}h1{font-size:26px}.notes{break-inside:avoid}}
+</style>
+</head>
+<body><main>
+<nav><span>COMPLETED PRICE TAPES · FIGURE 1</span></nav>
+<header>
+<h1>What does the completed price tape add?</h1>
+<p class="lede">Each observation model chooses its own calibration schedule. Compare the information about the recovery parameter obtained from one completed episode.</p>
+<p class="small">Cost feedback records one scalar execution cost. Completed tape feedback also records prices throughout execution and recovery. Information here means Fisher information about the unknown recovery parameter θ.</p>
+</header>
+<div class="grid">
+<section aria-label="Original numerical figure">
+<h2>The numerical example in the paper</h2>
+<img class="chart" src="data:image/png;base64,__FIGURE_PNG__" alt="Figure 1. The cost to tape information ratio decreases from about 0.36 to 0.30 as the recovery window increases. Blue curve: evaluated continuum upper bound. Circles: separate numerical optimization on 64 intervals.">
+<p class="caption">The blue curve evaluates a continuous control upper bound for the ratio. Circles report separate numerical optimization on 64 intervals. The bracket displays evaluated bounds at U/T = 2, rounded outwards to three decimals.</p>
+</section>
+<section aria-label="Explore the saved calculation">
+<h2>Read the information advantage</h2>
+<p class="label">Completed tape / cost summary</p>
+<div class="result" id="multiple" aria-live="polite"></div>
+<p class="source">Saved numerical optimization on 64 intervals. Between computed nodes, tape information is linearly interpolated with cost information fixed. The page makes no solver calls.</p>
+<div class="slider">
+<label for="window">Recovery window U/T = <strong id="u"></strong></label>
+<input id="window" type="range" min="0.1" max="6" step="0.001" value="2" aria-label="Recovery window" aria-describedby="point-status">
+<div class="scale"><span>0.1</span><span>Continuous window</span><span>6</span></div>
+<p class="status" id="point-status" aria-live="polite"></p>
+</div>
+<div class="bar-label">Cost summary<span class="value">1.000</span></div>
+<div class="track"><span id="cost-bar" class="bar cost"></span></div>
+<div class="bar-label">Completed price tape<span class="value" id="tape-value"></span></div>
+<div class="track"><span id="tape-bar" class="bar tape"></span></div>
+<p class="small">Both bars use the cost information as the common unit. The cost to tape ratio shown in the paper is <strong id="ratio"></strong>.</p>
+<p class="small">More information improves estimation of the recovery parameter. The paper connects information to episode requirements under its regular recovery model assumptions.</p>
+</section>
+</div>
+<section class="notes">
+<h2>Reproduce, inspect, discuss</h2>
+<div class="steps">
+<div><strong>1. Check saved controls</strong><p><code>python reproduce.py verify</code></p></div>
+<div><strong>2. Run the calculation</strong><p><code>python reproduce.py compute</code></p></div>
+<div><strong>3. View fresh results</strong><p><code>python reproduce.py demo --data-dir output</code></p></div>
+</div>
+<p class="small">Run these commands from the repository root after installing requirements.txt. Open output/demo.html to view the generated demonstration.</p>
+<p class="small">Model: T = Q = σ = 1, R = 2, τ = 0. The recovery density is g<sub>θ</sub>(β) = (2/3)[1 + θ(5 − 4β)/3], with β ∈ [0.5, 2] and θ ∈ [−0.5, 0.5]. Here U is the recovery window, T is the execution horizon and R limits the trading rate.</p>
+<details><summary>How to interpret the two numerical objects</summary>
+<p>The line uses analytical inequalities over the continuous control class, evaluated by quadrature. The circles use feasible designs found by deterministic searches from several initial schedules. Their derivations and numerical status are documented in docs/METHODS.md. Display rounding and the numerical padding do not establish a rigorous floating point enclosure.</p>
+<p>The displayed multiplier is an information comparison for this example. A numerical information ratio alone does not verify the regularity assumptions needed for a decision complexity claim about this family.</p>
+</details>
+</section>
+<footer>Jinrui Yang · Offline demonstration · MIT licensed repository</footer>
+<script type="application/json" id="results">__RESULTS_JSON__</script>
+<script>
+const data = JSON.parse(document.getElementById('results').textContent);
+const slider = document.getElementById('window');
+slider.min = data.points[0].u;
+slider.max = data.points[data.points.length - 1].u;
+slider.value = 2;
+const maximum = Math.max(...data.points.map(p => p.multiple)) * 1.08;
+function pointAtWindow(target) {
+  const exact = data.points.find(p => Math.abs(p.u - target) < 1e-10);
+  if (exact) return {...exact, computed: true, left: exact.u, right: exact.u};
+  const rightIndex = data.points.findIndex(p => p.u > target);
+  const left = data.points[rightIndex - 1];
+  const right = data.points[rightIndex];
+  const weight = (target - left.u) / (right.u - left.u);
+  const cost = left.cost;
+  const tape = left.tape + weight * (right.tape - left.tape);
+  return {u: target, cost, tape, ratio: cost / tape, multiple: tape / cost,
+    computed: false, left: left.u, right: right.u};
+}
+function update() {
+  const target = Number(slider.value);
+  const p = pointAtWindow(target);
+  document.getElementById('u').textContent = p.u.toFixed(3);
+  document.getElementById('multiple').textContent = p.multiple.toFixed(3) + '×';
+  document.getElementById('tape-value').textContent = p.multiple.toFixed(3);
+  document.getElementById('ratio').textContent = p.ratio.toFixed(3);
+  document.getElementById('point-status').textContent = p.computed
+    ? 'Computed node · U/T = ' + p.u.toFixed(3) + '.'
+    : 'Linear interpolation · nodes U/T = ' + p.left.toFixed(3) + '–' + p.right.toFixed(3) + '.';
+  document.getElementById('cost-bar').style.width = (100 / maximum) + '%';
+  document.getElementById('tape-bar').style.width = (100 * p.multiple / maximum) + '%';
+  slider.setAttribute('aria-valuetext', 'U/T = ' + p.u.toFixed(3));
+}
+slider.addEventListener('input', update);
+update();
+</script>
+</main></body></html>
